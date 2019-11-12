@@ -22,7 +22,7 @@
 			},
 			{
 				"command": "extension.csv2table",
-				"title": "Convert data to table from CSV file"
+				"title": "Convert Data To Table From CSV File"
 			}
 		]
 	},

@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import Parser from './converter/csv2table/Parser';
 import TableFormatter from './converter/csv2table/TableFormatter';
+import { Logit } from './logit';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -10,8 +11,19 @@ export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Congratulations, your extension "vscode-toolbox" is now active!');
 
-	context.subscriptions.push(registerCommand('extension.helloWorld'));
-	context.subscriptions.push(registerDataConvertCommand(',', 'extension.csv2table'));
+	// context.subscriptions.push(registerCommand('extension.helloWorld'));
+	// context.subscriptions.push(registerDataConvertCommand(',', 'extension.csv2table'));
+	context.subscriptions.push(vscode.commands.registerCommand('extension.logit', () => {
+		Logit.unfold(context.extensionPath);
+		vscode.window.showInformationMessage('Logit!');
+	}));
+
+	let statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
+	statusBarItem.text = 'Logit';
+	statusBarItem.tooltip = 'Show Git Log';
+	statusBarItem.command = 'extension.logit';
+	context.subscriptions.push(statusBarItem);
+	statusBarItem.show();
 }
 
 function registerDataConvertCommand(separator: string, commandName: string): vscode.Disposable {
@@ -42,12 +54,12 @@ function registerDataConvertCommand(separator: string, commandName: string): vsc
 	return disposable
 }
 
-function registerCommand(commandName: string): vscode.Disposable {
-	let disposable = vscode.commands.registerCommand(commandName, () => {
-		vscode.window.showInformationMessage('Hello World!');
-	});
-	return disposable
-}
+// function registerCommand(commandName: string): vscode.Disposable {
+// 	let disposable = vscode.commands.registerCommand(commandName, () => {
+// 		vscode.window.showInformationMessage('Hello World!');
+// 	});
+// 	return disposable
+// }
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
